@@ -14,5 +14,10 @@ class LoginPageApi(APIView):
         return Response(status=status.HTTP_200_OK)
 
 
-    def post(self, request):
-        return Response(status=status.HTTP_201_CREATED)
+class RegisterPageApi(APIView):
+    permission_classes = (AllowAny,)
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'signup.html'
+
+    def get(self, request):
+        return Response(status=status.HTTP_200_OK)
