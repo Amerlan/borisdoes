@@ -14,7 +14,7 @@ click-repl==0.2.0
 constantly==15.1.0
 cryptography==3.4.7
 daphne==2.5.0
-Django==2.2.24
+Django==3.2.6
 djangorestframework==3.12.4
 hyperlink==21.0.0
 idna==3.2

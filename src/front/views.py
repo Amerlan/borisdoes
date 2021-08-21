@@ -1,3 +1,4 @@
+from django.shortcuts import redirect
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework.renderers import TemplateHTMLRenderer
@@ -11,6 +12,8 @@ class LoginPageApi(APIView):
     template_name = 'login.html'
 
     def get(self, request):
+        if request.user.is_authenticated:
+            return redirect('chats/')
         return Response(status=status.HTTP_200_OK)
 
 
@@ -20,4 +23,6 @@ class RegisterPageApi(APIView):
     template_name = 'signup.html'
 
     def get(self, request):
+        if request.user.is_authenticated:
+            return redirect('chats/')
         return Response(status=status.HTTP_200_OK)

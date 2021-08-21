@@ -20,6 +20,7 @@
             <br>
             <button id="sbmt">Login</button>
         </div>
+        <a href="/signup/">Signup</a>
     </div>
 </div>
 
@@ -32,7 +33,7 @@
             'username': username.value,
             'password': password.value
         };
-        const url = "http://0.0.0.0:8000/api/login/";
+        const url = "http://0.0.0.0:8000/api/users/login/";
         fetch(url, {
             method: "POST",
             headers: {
