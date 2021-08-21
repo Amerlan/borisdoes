@@ -2,12 +2,59 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <title>Login page</title>
 </head>
 <body>
-<label for="username"><b>Username</b></label>
-<input name="username" type="text" placeholder="Enter username" required>
-<label for="password"><b>Username</b></label>
-<input name="password" type="password" placeholder="Enter password" required>
+<div class="container">
+    <div class="row"></div>
+    <div class="row">
+        <div class="col">
+            <label for="username"><b>Username</b></label>
+            <input id="username" name="username" type="text" placeholder="Enter username" required>
+            <br>
+            <label for="password"><b>Password</b></label>
+            <input id="password" name="password" type="password" placeholder="Enter password" required>
+            <br>
+            <p id="warning" style="color: darkred" hidden="true">Wrong username or password</p>
+            <br>
+            <button id="sbmt">Login</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let submit_btn = document.getElementById('sbmt');
+    function submit(){
+        let username = document.getElementById('username');
+        let password = document.getElementById('password');
+        let data = {
+            'username': username.value,
+            'password': password.value
+        };
+        const url = "http://0.0.0.0:8000/api/login/";
+        fetch(url, {
+            method: "POST",
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(res => {
+            let warning = document.getElementById('warning');
+            if (res.status === 200){
+                username.style.borderColor = 'green';
+                password.style.borderColor = 'green';
+                warning.hidden = true;
+            }
+            else if (res.status === 400){
+                username.style.borderColor = 'red';
+                password.style.borderColor = 'red';
+                warning.hidden = false;
+            }
+        })
+    }
+    submit_btn.addEventListener('click', submit);
+</script>
 </body>
 </html>
