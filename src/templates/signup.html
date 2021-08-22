@@ -63,6 +63,7 @@
                     username.style.borderColor = 'green';
                     username_warning.hidden = true;
                     password_match_warning.hidden = true;
+                    window.location.replace('/');
                 }
                 else if (res.status === 400){
                     username.style.borderColor = 'red';

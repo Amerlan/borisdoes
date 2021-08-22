@@ -1,10 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>{{chat_id}}</title>
 </head>
 <body>
 
+<div class="container">
+<div class="row clearfix">
+    <div class="col-lg-12">
+        <div class="card chat-app">
+            <div class="chat">
+                <div class="chat-header clearfix">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="chat-about">
+                                <h1 id="chat_id" class="m-b-0">{{chat_id}}</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id='chat' class="chat-history" style="overflow: auto; width: 80%; height: 500px;">
+                    <ul id="messages" class="m-b-0">
+                    </ul>
+                </div>
+                <div class="chat-message clearfix">
+                    <div class="input-group mb-0">
+                        <input id="chat-message-input" type="text" size="100"><br>
+                        <input id="chat-message-submit" type="button" value="Send">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+    function scroll_chat() {
+         var objDiv = document.getElementById("chat");
+         objDiv.scrollTop = objDiv.scrollHeight;
+    }
+    const ul = document.getElementById('messages');
+    function add_message(time, username, text){
+        let li = document.createElement('li');
+        li.className = 'clearfix';
+        li.style = "border-color: gray; margin-bottom: 15px";
+        let div = document.createElement('div');
+        div.className = "message-data text-right";
+        let span = document.createElement('span');
+        span.className = "message-data-time";
+        span.innerText = time + " " + "from " + username;
+        div.appendChild(span);
+        let mes_div = document.createElement('div');
+        mes_div.className = "message";
+        mes_div.innerText = text;
+        li.appendChild(div);
+        li.appendChild(mes_div);
+        ul.appendChild(li);
+        scroll_chat();
+    }
+
+    window.onload = scroll_chat();
+    const chat_id = document.getElementById('chat_id').innerText
+    const socker_url = 'ws://' + window.location.host + '/ws/chat/' + chat_id + '/'
+    const socket = new WebSocket(socker_url);
+    socket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            add_message(data.time, data.username, data.text);
+        };
+    document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+    document.querySelector('#chat-message-submit').onclick = function(e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+            if (message.length > 0){
+                socket.send(JSON.stringify({
+                    'message': message
+                }));
+            }
+            messageInputDom.value = '';
+        };
+    </script>
 </body>
 </html>

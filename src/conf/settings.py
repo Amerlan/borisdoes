@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'users',
     'front',
+    'chats',
 ]
 
 MIDDLEWARE = [
@@ -60,6 +61,19 @@ TEMPLATES = [
 ]
 
 ASGI_APPLICATION = 'conf.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('172.17.0.1', 6379)],
+        },
+    }
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination'
+}
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -107,7 +121,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Etc/GMT+3'
 
 USE_I18N = True
 
