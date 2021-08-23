@@ -6,7 +6,7 @@ volumes:
 
 services:
   postgres:
-    container_name: 'postgresql'
+    container_name: 'postgres'
     image: postgres:13-alpine
     networks:
       - common
@@ -18,9 +18,11 @@ services:
   redis:
     container_name: 'redis'
     image: redis:alpine
+    ports:
+      - "6379:6379"
 
   django:
-    restart: always
+    restart: on-failure
     container_name: 'django'
     build: .
     depends_on:
@@ -39,6 +41,8 @@ services:
       - postgres
       - redis
       - django
+    networks:
+      - common
 
 
 networks:

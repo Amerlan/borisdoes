@@ -2,9 +2,84 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <title>Signup page</title>
 </head>
 <body>
+<div class="container">
+    <div class="row"></div>
+    <div class="row">
+        <div class="col">
+            <label for="username"><b>Username</b></label>
+            <input id="username" name="username" type="text" placeholder="Enter username" required>
+            <br>
+            <label for="password1"><b>Password</b></label>
+            <input id="password1" name="password1" type="password" placeholder="Enter password" required>
+            <br>
+            <label for="password2"><b>Password</b></label>
+            <input id="password2" name="password2" type="password" placeholder="Repeat password" required>
+            <br>
+            <p id="username_warning" style="color: darkred" hidden="true"></p>
+            <p id="password_match" style="color: darkred" hidden="true"></p>
+            <br>
+            <button id="sbmt">Signup</button>
+        </div>
+    </div>
+    <a href="/">Login</a>
+</div>
 
+<script>
+    let submit_btn = document.getElementById('sbmt');
+    function submit(){
+        let username = document.getElementById('username');
+        let password1 = document.getElementById('password1');
+        let password2 = document.getElementById('password2');
+        let username_warning = document.getElementById('username_warning');
+        let password_match_warning = document.getElementById('password_match');
+        let password_match_valid = false;
+        let data = {
+            'username': username.value,
+            'password1': password1.value,
+            'password2': password2.value,
+        };
+        const url = "http://" + window.location.host + "/api/users/signup/";
+
+        if (password1.value === password2.value){
+            password_match_valid = true;
+            password1.style.borderColor = 'green';
+            password2.style.borderColor = 'green';
+        }
+
+        if (password_match_valid){
+            fetch(url, {
+            method: "POST",
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+            })
+            .then(res => {
+                if (res.status === 200){
+                    username.style.borderColor = 'green';
+                    username_warning.hidden = true;
+                    password_match_warning.hidden = true;
+                    window.location.replace('/');
+                }
+                else if (res.status === 400){
+                    username.style.borderColor = 'red';
+                    username_warning.innerText = 'Username is already taken';
+                    username_warning.hidden = false;
+                }
+            })
+        }
+        else{
+            password_match_warning.innerText = "Passwords don't match";
+            password_match_warning.hidden = false;
+            password1.style.borderColor = 'red';
+            password2.style.borderColor = 'red';
+        }
+    }
+    submit_btn.addEventListener('click', submit);
+</script>
 </body>
 </html>
