@@ -27,4 +27,6 @@ class MessageHistoryLogSerializer(serializers.ModelSerializer):
         )
 
     def get_sender(self, obj):
-        return obj.sender.username
+        if obj.sender:
+            return obj.sender.username
+        return 'Anonymous User'

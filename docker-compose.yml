@@ -6,7 +6,7 @@ volumes:
 
 services:
   postgres:
-    container_name: 'postgresql'
+    container_name: 'postgres'
     image: postgres:13-alpine
     networks:
       - common
@@ -25,12 +25,10 @@ services:
     restart: on-failure
     container_name: 'django'
     build: .
-    volumes:
-      - ./src:/src:rw
     depends_on:
       - postgres
     ports:
-    - "8000:8000"
+    - "8001:8000"
     command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     networks:
       - common
@@ -43,6 +41,8 @@ services:
       - postgres
       - redis
       - django
+    networks:
+      - common
 
 
 networks:

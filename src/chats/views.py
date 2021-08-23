@@ -27,7 +27,7 @@ class MessageApi(APIView):
 
     def get(self, request, chat_name):
         chat = Chat.objects.get(chat_name=chat_name)
-        messages = MessageHistoryLog.objects.filter(chat=chat)
+        messages = MessageHistoryLog.objects.filter(chat=chat).order_by('-created_at')
         return get_paginated_response(
             pagination_class=LimitOffsetPagination,
             serializer_class=MessageHistoryLogSerializer,

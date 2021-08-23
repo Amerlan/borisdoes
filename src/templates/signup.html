@@ -42,7 +42,7 @@
             'password1': password1.value,
             'password2': password2.value,
         };
-        const url = "http://0.0.0.0:8000/api/users/signup/";
+        const url = "http://" + window.location.host + "/api/users/signup/";
 
         if (password1.value === password2.value){
             password_match_valid = true;
